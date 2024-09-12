@@ -3,19 +3,13 @@
 namespace App\EntityRepository;
 
 use App\Entity\Customer;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @ORM\Entity
- */
 class CustomerRepository extends ServiceEntityRepository
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Customer::class;
+        parent::__construct($registry, Customer::class);
     }
 }

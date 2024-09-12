@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Customer
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private int $id;
 
     /**
      *
@@ -18,7 +26,6 @@ class Customer
      * @var string
      */
     public string $code;
-
 
     /**
      *

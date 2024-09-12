@@ -20,22 +20,25 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CustomerController extends AbstractController
 {
+    public function __construct(
+        private CustomerRepository $repository
+    )
+    {
+    }
 
     /**
-     *
-     * @Route("/customer/{code}/notifications", name="customer_notifications", methods={"GET"})
+     * @Route("/api/customer/{code}/notifications", name="customer_notifications", methods={"POST"})
      */
     public function notifyCustomer(string $code, Request $request): Response
     {
         $requestData = json_decode($request->getContent(), true);
 
-        $repository = new CustomerRepository();
         /** @var Customer $customer */
-        $customer = $repository->find($code);
+        $customer = $this->repository->findOneBy(['code' => $code]);
 
         $message = new Message();
-        $message->setBody($customer->getNotificationType());
-        $message->setType($requestData->type);
+        $message->setBody($requestData['body']);
+        $message->setType($customer->getNotificationType());
 
         $messenger = new Messenger([new EmailSender(), new SMSSender()]);
         $messenger->send($message);
